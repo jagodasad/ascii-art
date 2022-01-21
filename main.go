@@ -1,295 +1,102 @@
-fmt.Println()
-file, err := os.Open("/path/to/file.txt") // opens file object
-if err != nil {
-	log.Fatal(err)
-}
-defer file.Close()
-
-scanner := bufio.NewScanner(file) // scanner (could be 'lines') that scans line-by-line
-// optionally, resize scanner's capacity for lines over 64K, see next example
-for scanner.Scan() {
-	fmt.Println(scanner.Text())
-}
-
-if err := scanner.Err(); err != nil { // very important it yields an error in case e.g. there was buffer full and
-	log.Fatal(err) // all lines were not scanned through
-}
-
----------------------------
 package main
 
 import (
-    "fmt"
-    "strings"
-    "unicode"
-    //"sort"
-    //"strconv"
+	"bufio"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"os"
+	"strings"
+	"time"
+	"unicode/utf8"
 )
 
-func main() {
-    s1 := " #  ##   ## ##  ### ###  ## # # ###  ## # # #   # # ###  #  ##   #  ##   ## ### # # # # # # # # # # ### ### "
-    s2 := "# # # # #   # # #   #   #   # #  #    # # # #   ### # # # # # # # # # # #    #  # # # # # # # # # #   #   # "
-    s3 := "### ##  #   # # ##  ##  # # ###  #    # ##  #   ### # # # # ##  # # ##   #   #  # # # # ###  #   #   #   ## "
-    s4 := "# # # # #   # # #   #   # # # #  #  # # # # #   # # # # # # #    ## # #   #  #  # # # # ### # #  #  #       "
-    s5 := "# # ##   ## ##  ### #    ## # # ###  #  # # ### # # # #  #  #     # # # ##   #  ###  #  # # # #  #  ###  #  "
-
-    var lex = []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "?"}
-
-    var lines []string
-    lines = append(lines, s1, s2, s3, s4, s5)
-
-    dict := Dictionnary{}
-    dict.Init(lex, lines, 4)
-
-    //a := dict.Letters["A"]
-    //a.Print()
-
-    //f := dict.Letters["F"]
-    //f.Print()
-
-    //dict.Letters["A"].Print()
-    //dict.Print()
-
-    //dict.PrintWord("E")
-    //dict.PrintWord("MANHATTAN")
-    //dict.PrintWord("M@NHATTAN")
-    //dict.PrintWord("ManhAtTan")
-    dict.PrintWord("Lorem ipsum dolor sit amet,...")
-}
-
-type Dictionnary struct {
-    Height, Length int
-    Letters        map[string]Letter
-}
-
-func (d *Dictionnary) Init(e []string, l []string, x int) {
-    d.Height = len(l)
-    d.Length = x
-    d.Letters = make(map[string]Letter)
-    for _, v := range e {
-        var letter Letter
-        lines := map[int]string{}
-        letter.Lines = lines
-        d.Letters[v] = letter
-    }
-    for k, v := range l {
-        n := splitStr(v, x, 0, len(l))
-        for i, j := range n {
-            d.Letters[e[i]].Lines[k] = j
-        }
-    }
-}
-
-func (d *Dictionnary) PrintWord(s string) {
-    for _, c := range s {
-        fmt.Printf("%+q => %#U\n", string(c), c)
-    }
-    fmt.Println()
-
-    out := make(map[int]string)
-    for _, c := range s {       
-        for i := 0; i < d.Height; i++ {
-            if findStr(strings.ToUpper(string(c)), Keys(d.Letters)) {
-                x := d.Letters[strings.ToUpper(string(c))]
-                out[i] += x.Lines[i]
-            } else if unicode.IsSpace(c) {
-                out[i] += strings.Repeat(" ", d.Length)
-            } else {
-                x := d.Letters["?"]
-                out[i] += x.Lines[i]
-            }
-        }
-    }
-
-    for i := 0; i < len(out); i++ {
-        fmt.Println(out[i])
-    }
-}
-
-func (d *Dictionnary) Print() {
-    for d, e := range d.Letters {
-        fmt.Printf("index: %s\n", d)
-        e.Print()
-    }
-}
-
-type Letter struct {
-    Lines map[int]string
-}
-
-func (l *Letter) Print() {
-    for i := 0; i < len(l.Lines); i++ {
-        fmt.Println(l.Lines[i])
-    }
-}
-
-func splitStr(s string, l int, b int, e int) (r []string) {
-    i := b
-    e = len(s)
-    for i < e {
-        j := i + l
-        if j > e {
-            j = e
-        }
-        r = append(r, string(s[i:j]))
-        i = j
-    }
-    return r
-}
-
-func findStr(a string, list []string) bool {
-    for _, b := range list {
-        if b == a {
-            return true
-        }
-    }
-    return false
-}
-
-func Keys(m map[string]Letter) (keys []string) {
-    for k := range m {
-        keys = append(keys, k)
-    }
-    return keys
-}
-
--------------------------------------------------------
-
-package main
-
-import (
-    "fmt"
-    "os"
-    "bufio"
-    "strconv"
-    "strings"
-    "unicode"
-)
-
-var lex = []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "?"}
+/* You’d need to run this code on your local machine */
+/* Because, play.golang.org doesn't allow files */
 
 func main() {
-    scanner := bufio.NewScanner(os.Stdin)
+	art() // run the ANSI art function
 
-    scanner.Split(bufio.ScanLines)
-
-    var L int
-    scanner.Scan()
-    fmt.Sscan(scanner.Text(),&L)
-    fmt.Fprintln(os.Stderr, "Letter's Length " + strconv.Itoa(L))
-
-    var H int
-    scanner.Scan()
-    fmt.Sscan(scanner.Text(),&H)
-    fmt.Fprintln(os.Stderr, "Letter's Height " + strconv.Itoa(H))
-
-    var T string
-    scanner.Scan()
-    fmt.Sscan(scanner.Text(),&T)
-    fmt.Fprintln(os.Stderr, "input text: " + T)
-
-    var Rows []string
-    // we have 27 item of 4 space each: 108 characters
-    for scanner.Scan() {
-        row := scanner.Text()
-        fmt.Fprintln(os.Stderr, row)
-        Rows = append(Rows, row)
-    }
-
-    dict := Dictionnary{}
-	dict.Init(lex, Rows, L)
-
-    dict.PrintWord(T)
-// 	dict.PrintWord("Lorem ipsum dolor sit amet,... ")
-}
-
-type Dictionnary struct {
-	Height, Length int
-	Letters map[string]Letter
-}
-
-func (d *Dictionnary) Init(e []string, l []string, x int) {
-	d.Height = len(l)
-	d.Length = x
-	d.Letters = make(map[string]Letter)
-	for _, v := range e {
-		var letter Letter
-		lines := map[int]string{}
-		letter.Lines = lines
-		d.Letters[v] = letter
+	if err := keyboard.Open(); err != nil { // quick keypress test/loop
+		panic(err)
 	}
-	for k, v := range l {
-		n := splitStr(v, x, 0, len(l))
-		for i, j := range n {
-			d.Letters[e[i]].Lines[k] = j
+
+	defer func() {
+		_ = keyboard.Close()
+	}()
+
+	for {
+		char, key, err := keyboard.GetKey()
+		if err != nil {
+		}
+		if string(char) == "r" || string(char) == "R" { // reload
+			art()
+		}
+		if string(char) == "q" || string(char) == "Q" || key == keyboard.KeyEsc { // exit
+			os.Exit(0)
 		}
 	}
 }
 
-func (d *Dictionnary) PrintWord(s string) {
-	out := make(map[int]string)
-	for _, c := range s {
-	    for i := 0; i < d.Height; i++ {
-	        if findStr(strings.ToUpper(string(c)), Keys(d.Letters)) {
-	            x := d.Letters[strings.ToUpper(string(c))]
-	            out[i] += x.Lines[i]
-	        } else if unicode.IsSpace(c) {
-	            out[i] += strings.Repeat(" ", d.Length)
-	        } else {
-	            x := d.Letters["?"]
-	            out[i] += x.Lines[i]
-	        }
-	    }
-	}
-
-	for i := 0; i < len(out); i++ {
-		fmt.Println(out[i])
-	}
+func art() {
+	// Example ANSI art file: https://16colo.rs/pack/mist0121/raw/LDA-PHASE90.ANS
+	writeCp437("/home/robbiew/go/src/github.com/robbiew/ansi-col-count/LDA-PHASE90.ANS", 80) // 80 is the max line length
 }
 
-func (d *Dictionnary) Print() {
-	for d, e := range d.Letters {
-		fmt.Printf("index: %s\n", d)
-		e.Print()
+func writeCp437(file string, limit int) {
+	content, err := ioutil.ReadFile(file)
+	if err != nil {
+		log.Fatal(err)
 	}
-}
 
-type Letter struct {
-	Lines map[int]string
-}
+	noSauce := TrimStringFromSauce(string(content)) // strip off the SAUCE metadata
+	s := bufio.NewScanner(strings.NewReader(string(noSauce)))
 
-func (l *Letter) Print() {
-	for i := 0; i < len(l.Lines); i++ {
-		fmt.Println(l.Lines[i])
+	for s.Scan() {
+
+		var d io.Reader = strings.NewReader(s.Text())                    // each line as string
+		utf8 := transform.NewReader(d, charmap.CodePage437.NewDecoder()) // decode from CP437 to UTF-8
+		decBytes, _ := ioutil.ReadAll(utf8)
+		decS := string(decBytes)
+
+		f := wrap.NewWriter(limit) // reflow packag from github.com/muesli/reflow
+		f.PreserveSpace = true
+		f.Newline = []rune{'\n'}
+		f.KeepNewlines = true
+		f.Write([]byte(decS))
+
+		var cp437 io.Reader = strings.NewReader(f.String())
+		cp437 = transform.NewReader(cp437, charmap.CodePage437.NewEncoder()) // encode bytes to CP437
+		encBytes, _ := ioutil.ReadAll(cp437)
+		encB := string(encBytes)
+		fmt.Println(encB)
+		time.Sleep(70 * time.Millisecond) // wait for a bit between lines
 	}
 }
 
-func splitStr(s string, l int, b int, e int) (r []string) {
-	i := b
-	e = len(s)
-	for i < e {
-		j := i + l
-		if j > e {
-			j = e
-		}
-		r = append(r, string(s[i:j]))
-		i = j
+func TrimStringFromSauce(s string) string {
+	if idx := strings.Index(s, "COMNT"); idx != -1 {
+		string := s
+		delimiter := "COMNT"
+		leftOfDelimiter := strings.Split(string, delimiter)[0]
+		trim := TrimLastChar(leftOfDelimiter)
+		return trim
 	}
-	return r
+	if idx := strings.Index(s, "SAUCE00"); idx != -1 {
+		string := s
+		delimiter := "SAUCE00"
+		leftOfDelimiter := strings.Split(string, delimiter)[0]
+		trim := TrimLastChar(leftOfDelimiter)
+		return trim
+	}
+	return s
 }
 
-func findStr(a string, list []string) bool {
-    for _, b := range list {
-        if b == a {
-            return true
-        }
-    }
-    return false
-}
-
-func Keys(m map[string]Letter) (keys []string) {
-    for k := range m {
-        keys = append(keys, k)
-    }
-    return keys
+func TrimLastChar(s string) string {
+	r, size := utf8.DecodeLastRuneInString(s)
+	if r == utf8.RuneError && (size == 0 || size == 1) {
+		size = 0
+	}
+	return s[:len(s)-size]
 }
