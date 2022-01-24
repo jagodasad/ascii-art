@@ -200,6 +200,7 @@ func Keys(m map[string]Letter) (keys []string) {
 
 //     dict.PrintWord(T)
 // // 	dict.PrintWord("Lorem ipsum dolor sit amet,... ")
+// dict.PrintWord(os.Args[1])
 // }
 
 // type Dictionnary struct {
