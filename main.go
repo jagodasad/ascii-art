@@ -20,6 +20,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"unicode"
 )
@@ -48,7 +49,7 @@ func main() {
 	// dict.Letters["A"].Print()
 	// dict.Print()
 
-	dict.PrintWord("Hello")
+	dict.PrintWord(os.Args[1])
 	// dict.PrintWord("MANHATTAN")
 	// dict.PrintWord("M@NHATTAN")
 	// dict.PrintWord("ManhAtTan")
