@@ -1,9 +1,14 @@
 // fmt.Println()
-// file, err := os.Open("/path/to/file.txt") // opens file object
+// file, err := os.Open("standard.txt") // opens file object
 // if err != nil {
 // 	log.Fatal(err)
 // }
 // defer file.Close()
+
+// bytes, _ := os.ReadFile("standard.txt")
+// string := string(bytes)
+// slice := strings.Split(string, "\n")
+// fmt.Println(slice[50])
 
 // scanner := bufio.NewScanner(file) // scanner (could be 'lines') that scans line-by-line
 // // optionally, resize scanner's capacity for lines over 64K, see next example
