@@ -45,10 +45,10 @@ func main() {
 		//lines := strings.Split(string(rawBytes), "\n")
 		//for l, line := range lines {
 		for j := 0; j < len(wordRune); j++ {
-			if lines[int(wordRune[j])*9-286+i] == "        " {
+			if lines[int(wordRune[j])*9-287+i] == "        " {
 				fmt.Print("        ")
 			} else {
-				fmt.Print(lines[int(wordRune[j])*9-286+i])
+				fmt.Print(lines[int(wordRune[j])*9-287+i])
 			}
 		}
 		fmt.Print("\n")
