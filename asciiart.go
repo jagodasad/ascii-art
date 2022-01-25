@@ -3,12 +3,15 @@ package main
 import (
 	"bufio"
 	"fmt"
+	//"strings"
+	//"io/ioutil"
 	"log"
 	"os"
 	"strings"
 )
 
 func main() {
+
 	wordArg := os.Args
 	newLine := ""
 	for _, i := range wordArg[1] {
@@ -56,4 +59,5 @@ func main() {
 	if newLine != "" {
 		fmt.Print(newLine)
 	}
+
 }
