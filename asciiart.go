@@ -70,8 +70,6 @@ func main() {
 				}
 				fmt.Print("\n")
 			}
-		} else if result[a] == "\\n" {
-			fmt.Print("\n")
 		}
 	}
 }
