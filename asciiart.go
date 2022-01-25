@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"strings"
 
 	//"io/ioutil"
 	"log"
@@ -42,7 +43,7 @@ func main() {
 	}*/
 
 	for i := 0; i < 8; i++ {
-		// lines := strings.Split(string(rawBytes), "\n")
+		lines := strings.Split(string(wordRune), "\\n")
 		// f.Newline = []rune{'\n'}
 		// for l, line := range lines {
 		for j := 0; j < len(wordRune); j++ {
