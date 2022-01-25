@@ -15,7 +15,7 @@ import (
 
 func main() {
 	wordArg := os.Args
-	wordRune := []rune(wordArg[1])
+	wordRune := wordArg[1]
 
 	f, err := os.Open("standard.txt")
 	if err != nil {
@@ -41,9 +41,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}*/
-
+	line := strings.Split(wordRune, "\\n")
+	// fmt.Println(wordRune)
+	for _, a := range line {
+		fmt.Println(a)
+	}
 	for i := 0; i < 8; i++ {
-		lines := strings.Split(string(wordRune), "\\n")
+
 		// f.Newline = []rune{'\n'}
 		// for l, line := range lines {
 		for j := 0; j < len(wordRune); j++ {
