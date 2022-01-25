@@ -44,18 +44,20 @@ func main() {
 	}
 
 	if len(wordRune) != 0 {
-		for i := 0; i < 8; i++ {
-			for j := 0; j < len(wordRune); j++ {
-				if lines[int(wordRune[j])*9-287+i] == "        " {
-					fmt.Printf("        ")
-				} else {
-					fmt.Printf(lines[int(wordRune[j])*9-287+i])
-				}
-			}
+		for a := 0; a < len(split); a++ {
 			fmt.Print("\n")
+			for i := 0; i < 8; i++ {
+				for j := 0; j < len(wordRune); j++ {
+					if lines[int(wordRune[j])*9-287+i] == "        " {
+						fmt.Printf("        ")
+					} else {
+						fmt.Printf(lines[int(wordRune[j])*9-287+i])
+					}
+				}
+				fmt.Print("\n")
+			}
 		}
 	}
-
 	if newLine != "" {
 		fmt.Print(newLine)
 	}
