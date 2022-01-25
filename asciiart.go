@@ -3,18 +3,24 @@ package main
 import (
 	"bufio"
 	"fmt"
-	//"io/ioutil"
 	"log"
 	"os"
-	//"strings"
+	"strings"
 )
 
-//using Bufio
-
 func main() {
-
 	wordArg := os.Args
-	wordRune := []rune(wordArg[1])
+	newLine := ""
+	for _, i := range wordArg[1] {
+		if i == '\\' {
+			newLine = "\n"
+		}
+	}
+
+	split := strings.Split(wordArg[1], "\\n")
+	splitString := strings.Join(split, "")
+
+	wordRune := []rune(splitString)
 
 	f, err := os.Open("standard.txt")
 	if err != nil {
@@ -34,24 +40,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(lines[0])
-
-	/*rawBytes, err := ioutil.ReadAll(f)
-	if err != nil {
-		panic(err)
-	}*/
-
-	for i := 0; i < 8; i++ {
-		//lines := strings.Split(string(rawBytes), "\n")
-		//for l, line := range lines {
-		for j := 0; j < len(wordRune); j++ {
-			if lines[int(wordRune[j])*9-287+i] == "        " {
-				fmt.Print("        ")
-			} else {
-				fmt.Print(lines[int(wordRune[j])*9-287+i])
+	if len(wordRune) != 0 {
+		for i := 0; i < 8; i++ {
+			for j := 0; j < len(wordRune); j++ {
+				if lines[int(wordRune[j])*9-287+i] == "        " {
+					fmt.Printf("        ")
+				} else {
+					fmt.Printf(lines[int(wordRune[j])*9-287+i])
+				}
 			}
+			fmt.Print("\n")
 		}
-		fmt.Print("\n")
 	}
 
+	if newLine != "" {
+		fmt.Print(newLine)
+	}
 }
