@@ -3,16 +3,16 @@ package main
 import (
 	"bufio"
 	"fmt"
+
 	//"io/ioutil"
 	"log"
 	"os"
 	//"strings"
 )
 
-//using Bufio
+// using Bufio
 
 func main() {
-
 	wordArg := os.Args
 	wordRune := []rune(wordArg[1])
 
@@ -42,8 +42,9 @@ func main() {
 	}*/
 
 	for i := 0; i < 8; i++ {
-		//lines := strings.Split(string(rawBytes), "\n")
-		//for l, line := range lines {
+		// lines := strings.Split(string(rawBytes), "\n")
+		// f.Newline = []rune{'\n'}
+		// for l, line := range lines {
 		for j := 0; j < len(wordRune); j++ {
 			if lines[int(wordRune[j])*9-287+i] == "        " {
 				fmt.Print("        ")
@@ -53,5 +54,4 @@ func main() {
 		}
 		fmt.Print("\n")
 	}
-
 }
