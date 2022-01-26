@@ -18,30 +18,27 @@ func main() {
 		}
 	}*/
 
-	wordString := ""
+	// wordString := ""
 
-	for i := 0; i < len(wordArg[1]); i++ {
-		if wordOneRune[i] != '\\' {
-			wordString = wordString + string(wordOneRune[i])
-		} else if i != 0 && i != len(wordArg[1])-1 && wordOneRune[i] == '\\' {
-			wordString = wordString + " "
-			wordString = wordString + string(wordOneRune[i])
-			wordString = wordString + string(wordOneRune[i+1])
-			wordString = wordString + ""
-			i = i + 1
-		}
-	}
+	// for i := 0; i < len(wordArg[1]); i++ {
+	// 	if wordOneRune[i] != '\\' {
+	// 		wordString = wordString + string(wordOneRune[i])
+	// 	} else if i != 0 && i != len(wordArg[1])-1 && wordOneRune[i] == '\\' {
+	// 		wordString = wordString + " "
+	// 		wordString = wordString + string(wordOneRune[i])
+	// 		wordString = wordString + string(wordOneRune[i+1])
+	// 		wordString = wordString + ""
+	// 		i = i + 1
+	// 	}
+	// }
 
-	 //fmt.Println(wordString)
+	// fmt.Println(wordString)
 
 	// split := strings.Split(wordArg[1], "\\n")
 	// splitString := strings.Join(split, "")
 
-	
-
-	//result := strings.Fields(wordString)
-	result := strings.Split(wordString, "\\n")
-	
+	// result := strings.Fields(wordString)
+	result := strings.Split(string(wordOneRune), "\\n")
 
 	f, err := os.Open("standard.txt")
 	if err != nil {
