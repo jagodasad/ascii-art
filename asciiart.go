@@ -11,19 +11,17 @@ import (
 func main() {
 	wordArg := os.Args
 	wordOneRune := []rune(wordArg[1])
-	/*newLine := ""
-	for _, i := range wordArg[1] {
-		if i == '\\' {
-			newLine = "\n"
-		}
-	}*/
 
 	wordString := ""
 
 	for i := 0; i < len(wordArg[1]); i++ {
-		if wordOneRune[i] != '\\' {
+		if len(wordArg[1]) <= 2 {
 			wordString = wordString + string(wordOneRune[i])
-		} else if i != 0 && i != len(wordArg[1])-1 && wordOneRune[i] == '\\' {
+		} else if wordOneRune[i] != '\\' {
+			wordString = wordString + string(wordOneRune[i])
+		} else if i != 0 &&
+			i != len(wordArg[1])-1 &&
+			wordOneRune[i] == '\\' {
 			wordString = wordString + " "
 			wordString = wordString + string(wordOneRune[i])
 			wordString = wordString + string(wordOneRune[i+1])
@@ -32,12 +30,16 @@ func main() {
 		}
 	}
 
-	// fmt.Println(wordString)
-
-	// split := strings.Split(wordArg[1], "\\n")
-	// splitString := strings.Join(split, "")
-
 	result := strings.Fields(wordString)
+	resultN := ""
+
+	for r := 0; r < len(result); r++ {
+		if result[r] != "\\n" {
+			resultN = resultN + string(result[r]) + " "
+		}
+	}
+
+	resultN = strings.Trim(resultN, " ")
 
 	f, err := os.Open("standard.txt")
 	if err != nil {
@@ -57,19 +59,39 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for a := 0; a < len(result); a++ {
-		wordRune := []rune(result[a])
-		if len(wordRune) != 0 && result[a] != "\\n" {
+	if len(resultN) != len(wordArg[1]) {
+		for a := 0; a < len(result); a++ {
+			wordRune := []rune(result[a])
+			if len(wordRune) != 0 && result[a] != "\\n" {
+				for i := 0; i < 8; i++ {
+					for j := 0; j < len(wordRune); j++ {
+						if lines[int(wordRune[j])*9-287+i] == "        " {
+							fmt.Printf("        ")
+						} else {
+							fmt.Printf(lines[int(wordRune[j])*9-287+i])
+						}
+					}
+					fmt.Print("\n")
+				}
+			} else {
+				fmt.Print("\n")
+			}
+		}
+	} else {
+		if resultN != "\\n" {
 			for i := 0; i < 8; i++ {
-				for j := 0; j < len(wordRune); j++ {
-					if lines[int(wordRune[j])*9-287+i] == "        " {
+				resultNRune := []rune(resultN)
+				for j := 0; j < len(resultNRune); j++ {
+					if lines[int(resultNRune[j])*9-287+i] == "        " {
 						fmt.Printf("        ")
 					} else {
-						fmt.Printf(lines[int(wordRune[j])*9-287+i])
+						fmt.Printf(lines[int(resultNRune[j])*9-287+i])
 					}
 				}
 				fmt.Print("\n")
 			}
+		} else {
+			fmt.Print("\n")
 		}
 	}
 }
